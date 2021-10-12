@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Tag {{ tag.title }} - {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <h1 class="mb-5">Posts with "{{ tag.title|title }}" tag:</h1>
+
+    {% for post in tag.posts.all %}
+        {% include 'blog/includes/postcard_template.html' %}
+    {% endfor %}
+
+{% endblock %}

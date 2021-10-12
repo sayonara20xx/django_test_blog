@@ -1,0 +1,15 @@
+<!-- тут я указываю, что этот файл затыкает блоки в base_blog -->
+{% extends "base.html" %}
+
+{% block title %}
+    123
+{% endblock %}
+
+<!-- тут я указываю, какой html-фарш будет затыкать и какой блок -->
+{% block content %}
+    <!-- тут мы описываем питоний цикл, который обработает джанго -->
+    <h1 class="mb-5"> Posts </h1>
+    {% for post in posts %}
+        {% include 'blog/includes/postcard_template.html' %}
+    {% endfor %}
+{% endblock %}
