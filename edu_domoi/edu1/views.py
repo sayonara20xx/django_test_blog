@@ -1,3 +1,69 @@
+from django.db.models.query import RawQuerySet
+from django.shortcuts import redirect, render, get_object_or_404
+from django.views.generic import View
+from django.http import HttpResponse
+from django.urls import reverse
+
+from .models import Post, Tag
+from .utils import *
+from .forms import *
+
+# Create your views here.
+
+def post_list(request):
+    posts = Post.objects.all()
+    return render(request, "blog/index.html", context={"posts": posts})
+
+
+class TagDetail(ObjectDetailMixin, View):
+    model = Tag
+    template = "blog/tag_detail.html"
+
+
+class TagCreate(ObjectCreateMixin, View):
+    form_model = TagForm
+    template = "blog/tag_create_form.html"
+
+
+class TagUpdate(ObjectUpdateMixin, View):
+    model = Tag
+    form_model = TagForm
+    template = "blog/tag_update_form.html"
+
+
+class TagDelete(ObjectDeleteMixin, View):
+    model = Tag
+    template = "blog/tag_delete_form.html"
+    redirect_url = "tags_list_url"
+
+
+class PostDetail(ObjectDetailMixin, View):
+    model = Post
+    template = "blog/post_detail.html"
+
+
+class PostCreate(ObjectCreateMixin, View):
+    form_model = PostForm
+    template = "blog/post_create_form.html"
+
+
+class PostUpdate(ObjectUpdateMixin, View):
+    model = Post
+    form_model = PostForm
+    template = "blog/post_update_form.html"
+
+
+class PostDelete(ObjectDeleteMixin, View):
+    model = Post
+    template = "blog/post_delete_form.html"
+    redirect_url = "posts_list_url"
+
+
+def tags_list(request):
+    tags = Tag.objects.all()
+    return render(request, "blog/tags_list.html", context={"tags": tags})
+
+
 """
     Все htlm распологаем внутри папки templates
     templates - словно корень, папки внутри - узлы,
@@ -58,7 +124,7 @@
     заменит тот блок, который был описан в файле, указанном в пути
     в экстенде
 
-    Да, джанго просто подставит в index.html тот html-каркас, который 
+    Да, джанго просто подставит index.html в тот html-каркас, который 
     мы опишем в других файлах.
     Польза такого неочевидного подхода очевидна - описание общее,
     меняется и контролируется посредством одного файла
@@ -122,23 +188,24 @@
     необязательно проверять какой именно запрос прилетел, GET ли он
     вообще
 
-    Пример описания уже представлен ниже, в urls.py теперь надо
+    Пример описания уже представлен выше, в urls.py теперь надо
     указать метод класса as_view как обработчик
 
     Проблему похожести логики решим с помощью её описания в отдельном
-    классе. Такие приколы называются МИКСИНАМИ
+    классе. Такие приколы называются МИКСИНАМИ, по сути, просто
+    промежуточные классы, от которых мы потом наследуемся.
 
     Я вынес их отдельно в utils.py, там же представлен пример описания
-    да, после описания миксина его нужно так же наследовать и
-    самым очевидным образом использовать, переопределив логику и
-    атрибуты
+    Да, после описания миксина его нужно так же наследовать и
+    самым очевидным образом использовать, переопределив логику
+    через определения атрибутов
 
-    Единственный интересный неочевидный момент завязан на
+    Единственный интересный и неочевидный момент завязан на
     формировании списка, передаваемый рендердеру во время
-    построения ответа-страницы: там мы используем получение
-    имени класса с приведением его к нижнему регистру как ключ
-    поля, так что это в рендеринге и листинге html надо
-    учитывать
+    построения ответа-страницы: 
+    там мы используем получение имени класса с приведением его 
+    к нижнему регистру как ключ поля, так что это в рендеринге 
+    и листинге html надо учитывать
 
     Ещё, что тоже стоит учитывать, так это MRO при наследовании
     миксинов: будет определено свойство так, как это указано
@@ -211,68 +278,3 @@
 
 
 """
-
-from django.db.models.query import RawQuerySet
-from django.shortcuts import redirect, render, get_object_or_404
-from django.views.generic import View
-from django.http import HttpResponse
-from django.urls import reverse
-
-from .models import Post, Tag
-from .utils import *
-from .forms import *
-
-# Create your views here.
-
-def post_list(request):
-    posts = Post.objects.all()
-    return render(request, "blog/index.html", context={"posts": posts})
-
-
-class TagDetail(ObjectDetailMixin, View):
-    model = Tag
-    template = "blog/tag_detail.html"
-
-
-class TagCreate(ObjectCreateMixin, View):
-    form_model = TagForm
-    template = "blog/tag_create_form.html"
-
-
-class TagUpdate(ObjectUpdateMixin, View):
-    model = Tag
-    form_model = TagForm
-    template = "blog/tag_update_form.html"
-
-
-class TagDelete(ObjectDeleteMixin, View):
-    model = Tag
-    template = "blog/tag_delete_form.html"
-    redirect_url = "tags_list_url"
-
-
-class PostDetail(ObjectDetailMixin, View):
-    model = Post
-    template = "blog/post_detail.html"
-
-
-class PostCreate(ObjectCreateMixin, View):
-    form_model = PostForm
-    template = "blog/post_create_form.html"
-
-
-class PostUpdate(ObjectUpdateMixin, View):
-    model = Post
-    form_model = PostForm
-    template = "blog/post_update_form.html"
-
-
-class PostDelete(ObjectDeleteMixin, View):
-    model = Post
-    template = "blog/post_delete_form.html"
-    redirect_url = "posts_list_url"
-
-
-def tags_list(request):
-    tags = Tag.objects.all()
-    return render(request, "blog/tags_list.html", context={"tags": tags})
