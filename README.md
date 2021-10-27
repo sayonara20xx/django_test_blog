@@ -1,6 +1,6 @@
 # django_test_blog
-Just a simple example with a bunch of comments.<br>
-`Created in educational purposes`<br>
+Just a simple example with a bunch of comments.
+`Created in educational purposes`
 
 # Structure
 There's default django files hierarchy but with a lot comments, which help to find out what specified file do and what relations with other files it have.
@@ -11,18 +11,18 @@ You need to set up virtual enviroment using your fav python module.
 For example, you can set up `virtualenv` with `pip` and create one in convenient place,
 or in root of this project.
 
-`pip install virtual env`
-`virtualenv venv`, or any other name instead `venv`
+`pip install virtual env`;
+`virtualenv venv`, or any other name instead `venv`.
 
 Activate your virtual enviroment (using provided scripts in venv-ex-name/Scripts,
-`activate.bat` - for windows and CMD, `activate` - for bash / sh or other linux CLI)
-And make sure there are appeared a name of venv in parenthesis.
+`activate.bat` - for windows and CMD, `activate` - for bash / sh or other linux CLI).
+Make sure there are appeared a name of venv in parenthesis.
 
 Set up Django
-`pip install django`
+`pip install django`.
 
 More likely you will also need to make migrations before server starting
-`python ./manage.py makemigrations`
+`python ./manage.py makemigrations`.
 
 Start server!
 `python ./manage.py startserver`
