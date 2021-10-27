@@ -80,6 +80,8 @@ target/
 __pycache__/
 local_settings.py
 
+# my changes
 .vs
 .env
 db.sqlite3
+venv/
