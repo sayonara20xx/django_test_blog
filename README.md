@@ -26,3 +26,7 @@ More likely you will also need to make migrations before server starting
 
 Start server!
 `python ./manage.py startserver`
+
+Also you need to know that there is no database in this repo!
+You need to add some data by yourself, using Django's REPL mode (manage.py shell) or
+website interface (recomended, cause it is only one useful functions of whole project Biblethump)

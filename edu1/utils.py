@@ -11,7 +11,7 @@ class ObjectDetailMixin:
 
     def get(self, request, slug):
         obj = get_object_or_404(self.model, slug__iexact=slug)
-        return render(request, self.template, context={self.model.__name__.lower(): obj})
+        return render(request, self.template, context={self.model.__name__.lower(): obj, "admin_object": obj, "detail": True})
 
 class ObjectCreateMixin(View):
     # здесь реагируем на post-запросы
@@ -38,7 +38,7 @@ class ObjectDeleteMixin(View):
 
     def get(self, request, slug):
         obj = self.model.objects.get(slug__iexact=slug)
-        return render(request, self.template, context={self.model.__name__.lower(): obj})
+        return render(request, self.template, context={self.model.__name__.lower(): obj, "admin_object": obj, "delete": True})
 
     def post(self, request, slug):
         obj = self.model.objects.get(slug__iexact=slug)
@@ -55,7 +55,7 @@ class ObjectUpdateMixin(View):
         obj = self.model.objects.get(slug__iexact=slug)
         bound_form = self.form_model(instance=obj)
         return render(request, self.template, 
-                      context={"form": bound_form, self.model.__name__.lower(): obj})
+                      context={"form": bound_form, self.model.__name__.lower(): obj, "admin_object": obj, "Update": True})
 
     def post(self, request, slug):
         obj = self.model.objects.get(slug__iexact=slug)
@@ -66,3 +66,25 @@ class ObjectUpdateMixin(View):
             return redirect(new_obj)
         return render(request, self.template, 
                       context={"form": bound_form, self.model.__name__.lower(): obj})
+
+'''
+    Вроде как всё понятно и уже описано: эти миксины просто объединяют в один
+    объект общую реализацию вьюшек-объектов.
+
+    Что стоит ещё упомянуть: работу с кнопками, которые реализуют функционал CRUD.
+    Чтобы отображать их как следует, передаем в контекст шаблона объект с ключом
+    'admin_object' со значением obj, т.е. передаем объект рендеру.
+    У этого обьекта вызываем методы получаения урлов для модификации
+    и удаления, т.е. прямо внутри href пишем вызов функции в двойных фигурных скобках
+
+    А, есть ещё переменные, передаваемые в конекст, которые отвечают за прорисовку кнопок,
+    они обеспечивают то, что лишние кнопки показываться не будут, например, во время
+    просмотра подробностей кнопки "создать" быть не должно.
+
+    Но я сделаю не как автор видоса, я просто запихну в рендер условие {% if имя_свойства %}
+    в блоке которого размещу то, что нужно. Например, при detail == true отображаются только
+    кнопки модификации или удаления поста.
+
+    Причем пофиг, определены ли эти контекстные переменные во время проверки или нет, если нет,
+    то просто вернётся false.
+'''

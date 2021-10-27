@@ -12,7 +12,7 @@ from .forms import *
 
 def post_list(request):
     posts = Post.objects.all()
-    return render(request, "blog/index.html", context={"posts": posts})
+    return render(request, "blog/index.html", context={"posts": posts, "index": True})
 
 
 class TagDetail(ObjectDetailMixin, View):
