@@ -41,6 +41,9 @@ class Post(models.Model):
     def __str__(self):
         return "{}".format(self.title)
 
+    class Meta:
+        ordering = ["-date_pub"]
+
 class Tag(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
@@ -56,6 +59,9 @@ class Tag(models.Model):
 
     def get_update_url(self):
         return reverse("tag_update_url", kwargs={"slug": self.slug})
+    
+    class Meta:
+        ordering = ["title"]
 
 """
     Описываю здесь всё связанное со взаимодействием с бд
