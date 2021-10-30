@@ -64,12 +64,14 @@
         </div>
     </div>
 
+    {% if request.user.is_authenticated and request.user.is_staff %}
     <!-- Админская панелька -->
     <div class="admin-panel align-items-center"> 
       <a href="/admin" class="btn btn-outline-info">admin</a>
       {% block admin-panel %}
       {% endblock %}
     </div>
+    {% endif %}
 
 </body>
 </html>

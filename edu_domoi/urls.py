@@ -15,9 +15,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
-
-from .views import hello
+from django.urls import path, include 
 
 # path представляет собой следующий метод:
 # если мы получаем значение, переданное первым аргументом, то вызываем вторую
@@ -28,20 +26,18 @@ from .views import hello
 # использовать вторым параметром функцию include, который вместо функции использует
 # модуль для обработки запроса
 
+from .views import redirect_blog
+
 urlpatterns = [
-    path('', hello),
+    path('', redirect_blog),
     path('admin/', admin.site.urls),
     path('blog/', include("edu1.urls"))
 ]
 
 """
-    ДИСКЛЕЙМЕР САМОМУ СЕБЕ
-    Я ВЬЮХОЙ ВЕЗДЕ НАЗЫВАЛ И ФУНКЦИЮ-ОБРАБОТЧИК
-    ЗАПРОСА (КАК ЗДОРОВЫЕ ЛЮДИ)
-    И ВЬЮХОЙ НАЗЫВАЮ HTML-ФАЙЛЫ
-    ЕСЛИ ПРОЧИТАЛ КТО-ТО КРОМЕ СОЗДАТЕЛЯ ФАЙЛОВ
-    УБЕЙТЕ ЕГО СТУЛОМ ЧТОБЫ НАВЕРНЯКА
-    (лень переписывать)
+    дисклеймер: кое-где под вьюхой может имется в виду
+    шаблон, который выдается после обработкой собственно кода
+    из view, т.е. обработчиком запроса.
 
     так, а теперь по-русски
 
