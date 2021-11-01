@@ -9,11 +9,23 @@ from .models import Post, Tag
 from .utils import *
 from .forms import *
 
+from django.db.models import Q
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 
 def post_list(request):
     posts = Post.objects.all()
+
+    # Вытаскиваем введённую в поиск инфу, если там ничего нет, то будет пустая строка
+    # приведение к булеву значению которого вернёт false, что и надо для условия ниже
+    search_query = request.GET.get('search', '')
+
+    if search_query:
+        # __icontains позволяет искать по вхождению
+        posts = Post.objects.filter(Q(title__icontains=search_query) | Q(body__icontains=search_query))
+    else:
+        posts = Post.objects.all()
 
     paginator = Paginator(posts, 2)
     page_number = request.GET.get('page', 1)
